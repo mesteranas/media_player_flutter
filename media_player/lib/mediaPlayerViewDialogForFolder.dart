@@ -4,7 +4,7 @@ import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 
 class MediaPlayerFolderViewer extends StatefulWidget {
-  var  FilePath="";
+  var  FilePath=[];
   MediaPlayerFolderViewer({Key?key,required this.FilePath}):super(key:key);
 
   @override
@@ -13,7 +13,7 @@ class MediaPlayerFolderViewer extends StatefulWidget {
 
 class _MediaPlayerFolderViewerState extends State<MediaPlayerFolderViewer> {
   int index=0;
-  var filePath;
+  var filePath=[];
   late Future<void> _initializeVideoPlayerFuture;
   VideoPlayerController? _controller;
   bool _showControls = false;
@@ -124,6 +124,7 @@ class _MediaPlayerFolderViewerState extends State<MediaPlayerFolderViewer> {
                                         onPressed: _fastForward,
                                       ),
                                     ),
+                                    Column(children: [
                                     Semantics(label:"volume" ,
                                     child: 
                                     
@@ -139,7 +140,7 @@ Slider(
   divisions: 10,
   label: 'volume ${_controller!.value.volume}',
 ),),
-Column(children: [
+
                                     Semantics(label:"rate" ,
                                     child: 
                                     
@@ -174,6 +175,20 @@ Slider(
 
 ),)
 ]),
+Column(
+  children: [
+    if (index!=0)
+    ElevatedButton(onPressed: (){
+      index-=1;
+      loadMedia();
+    }, child: Text("brevious")),
+    if (filePath.length-1!=index)
+    ElevatedButton(onPressed: (){
+      index+=1;
+      loadMedia();
+    }, child: Text("next")),
+  ],
+)
                                   ],
                                 ),
                               ],

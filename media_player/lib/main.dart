@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'mediaPlayerViewDialogForFolder.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'mediaPlayerViewDialogForUrls.dart';
@@ -129,6 +132,24 @@ class _test extends State<test>{
               );
             });
           }, child: Text(_("open link from internet"))),
+ElevatedButton(onPressed: () async{
+var result=await FilePicker.platform.getDirectoryPath();
+ if(result!=Null){
+  var files=Directory(result??"/").listSync();
+  var paths=[];
+  for (var file in files){
+    for (var fileFormat in [".mp3", ".wav", ".wma", ".aac", ".m4a", ".flac", ".ogg", ".opus", ".ape", ".mpga", ".alac", ".wv", ".mka", ".aiff", ".au", ".dss", ".iff", ".m4r", ".m4b", ".midi", ".mid", ".ac3", ".tta", ".m3u",".mp4", ".mkv", ".avi", ".mov", ".wmv", ".flv", ".3gp", ".webm", ".rm", ".m2ts", ".vob", ".mts", ".mxf", ".SWF", ".AV1", ".VP9", ".MPG", ".M4V", ".WMV", ".ASF", ".mpeg", ".ogv", ".rmvb", ".divx", ".m2v"]){
+      if (file.path.endsWith(fileFormat)){
+        paths.add(file.path);
+      }
+    }
+
+  }
+if (paths.length!=0){
+  Navigator.push(context, MaterialPageRoute(builder: (context)=>MediaPlayerFolderViewer(FilePath: paths)));
+}
+ }
+}, child: Text(_("open local folder")))          
     ])),)));
   }
 }
