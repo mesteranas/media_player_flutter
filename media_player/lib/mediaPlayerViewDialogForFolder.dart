@@ -3,21 +3,22 @@ import 'dart:io';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 
-class MediaPlayerViewer extends StatefulWidget {
+class MediaPlayerFolderViewer extends StatefulWidget {
   var  FilePath="";
-  MediaPlayerViewer({Key?key,required this.FilePath}):super(key:key);
+  MediaPlayerFolderViewer({Key?key,required this.FilePath}):super(key:key);
 
   @override
-  State<MediaPlayerViewer> createState() => _MediaPlayerViewerState(FilePath);
+  State<MediaPlayerFolderViewer> createState() => _MediaPlayerFolderViewerState(FilePath);
 }
 
-class _MediaPlayerViewerState extends State<MediaPlayerViewer> {
+class _MediaPlayerFolderViewerState extends State<MediaPlayerFolderViewer> {
+  int index=0;
   var filePath;
   late Future<void> _initializeVideoPlayerFuture;
   VideoPlayerController? _controller;
   bool _showControls = false;
 
-  _MediaPlayerViewerState(this.filePath);
+  _MediaPlayerFolderViewerState(this.filePath);
 
   @override
   void initState() {
@@ -26,7 +27,7 @@ class _MediaPlayerViewerState extends State<MediaPlayerViewer> {
   }
 
   Future<void> loadMedia() async {
-    var file = File(filePath);
+    var file = File(filePath[index]);
     _controller = VideoPlayerController.file(file);
     _initializeVideoPlayerFuture = _controller!.initialize();
     _controller!.setLooping(true);

@@ -28,10 +28,12 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  path_provider: ^2.0.12  # Check for the latest version on pub.dev
+  youtube_explode_dart: ^2.2.1
   file_picker: ^4.0.0
   video_player: ^2.3.4
   shared_preferences: ^2.0.6
-  http: ^0.13.3
+  http: ^1.2.1
   url_launcher: ^6.0.9
   flutter:
     sdk: flutter

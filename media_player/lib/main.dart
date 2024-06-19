@@ -1,3 +1,6 @@
+import 'package:path_provider/path_provider.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+import 'mediaPlayerViewDialogForUrls.dart';
 import 'mediaPlayerViewDialog.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:video_player/video_player.dart';
@@ -23,6 +26,8 @@ class test extends StatefulWidget{
   State<test> createState()=>_test();
 }
 class _test extends State<test>{
+  var youtube=false;
+  TextEditingController URLControler=TextEditingController();
   var _=Language.translate;
   _test();
   @override
@@ -86,7 +91,44 @@ class _test extends State<test>{
               Navigator.push(context, MaterialPageRoute(builder: (context)=>MediaPlayerViewer(FilePath: media,)));
             }
 
-          }, child: Text(_("open local file")))
+          }, child: Text(_("open local file"))),
+          ElevatedButton(onPressed: (){
+            showDialog(context: context, builder: (context){
+              return AlertDialog(
+                title: Text(_("enter url")    ),
+                content: Center(
+                  child: Column(
+                    children: [
+                      Row(children: [
+                      Checkbox(value: youtube, onChanged: (bool?value){
+                        setState(() {
+                          youtube=value??false;
+                        });
+                      },
+                      ),
+                      Text(_("youtube"))
+                      ]),
+                      TextFormField(controller: URLControler,),
+                      ElevatedButton(onPressed: () async{
+                        var url;
+                        if (youtube){
+                          var IT=YoutubeExplode();
+                          var video=await IT.videos.get(URLControler.text);
+                          var man=await IT.videos.streamsClient.getManifest(video.id);
+                          var stream=man.streams.first;
+                          url=stream.url;
+                        } else{
+                        url=Uri.parse(URLControler.text.replaceAll("http://", "https://"));
+                        }
+                        Navigator.pop(context);
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>MediaPlayerURLViewer(FilePath: url.toString())));
+                      }, child: Text(_("go"))),
+                    ],
+                  ),
+                ),
+              );
+            });
+          }, child: Text(_("open link from internet"))),
     ])),)));
   }
 }
